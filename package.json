@@ -7,7 +7,7 @@
 		"dev": "plugma dev",
 		"build": "plugma build",
 		"release": "plugma release",
-		"lint": "eslint --fix .",
+		"lint": "eslint --fix",
 		"type-check": "tsgo --noEmit -p src/main/tsconfig.json && tsgo --noEmit -p src/ui/tsconfig.json"
 	},
 	"devDependencies": {
