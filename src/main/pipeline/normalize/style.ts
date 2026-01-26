@@ -1,11 +1,11 @@
-import type { ExtractedStyle } from '../extract/types';
-import type { NormalizedStyle } from './types';
-import { cornerNormalizer } from './corner';
-import { effectsNormalizer } from './effects';
-import { paintNormalizer } from './fills';
-import { layoutNormalizer } from './layout';
-import { strokeNormalizer } from './stroke';
-import { textNormalizer } from './text';
+import type { ExtractedStyle } from "../extract/types"
+import { cornerNormalizer } from "./corner"
+import { effectsNormalizer } from "./effects"
+import { paintNormalizer } from "./fills"
+import { layoutNormalizer } from "./layout"
+import { strokeNormalizer } from "./stroke"
+import { textNormalizer } from "./text"
+import type { NormalizedStyle } from "./types"
 
 export class StyleNormalizer {
 	constructor(
@@ -25,8 +25,8 @@ export class StyleNormalizer {
 			text: this.text.normalizeText(style.text, style.nodeBoundVariables),
 			stroke: this.stroke.normalizeStroke(style.stroke, style.nodeBoundVariables),
 			corner: this.corner.normalizeCorner(style.corner, style.nodeBoundVariables),
-		};
+		}
 	}
 }
 
-export const styleNormalizer = new StyleNormalizer();
+export const styleNormalizer = new StyleNormalizer()

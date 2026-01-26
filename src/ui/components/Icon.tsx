@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react"
 
 interface IconProps {
-	size?: number;
-	svg: 'plugma' | 'plus';
+	size?: number
+	svg: "plugma" | "plus"
 }
 
 const Icon: React.FC<IconProps> = ({ size = 16, svg }) => {
-	if (svg === 'plugma') {
+	if (svg === "plugma") {
 		return (
 			<svg width={`${size}px`} height={`${size}px`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<g clipPath="url(#clip0_1508_4907)">
@@ -23,10 +23,10 @@ const Icon: React.FC<IconProps> = ({ size = 16, svg }) => {
 					</clipPath>
 				</defs>
 			</svg>
-		);
+		)
 	}
 
-	if (svg === 'plus') {
+	if (svg === "plus") {
 		return (
 			<svg width={`${size}px`} height={`${size}px`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<g opacity="0.3">
@@ -50,10 +50,10 @@ const Icon: React.FC<IconProps> = ({ size = 16, svg }) => {
 					/>
 				</g>
 			</svg>
-		);
+		)
 	}
 
-	return null; // Return nothing if `svg` does not match any case
-};
+	return null // Return nothing if `svg` does not match any case
+}
 
-export default Icon;
+export default Icon

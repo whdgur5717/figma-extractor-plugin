@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { z } from "zod"
 
 export const variableAliasSchema = z.object({
-	type: z.literal('VARIABLE_ALIAS'),
+	type: z.literal("VARIABLE_ALIAS"),
 	id: z.string(),
-});
+})
 
 export const tokenRefSchema = z.object({
 	id: z.string(),
@@ -12,9 +12,9 @@ export const tokenRefSchema = z.object({
 	collectionName: z.string().optional(),
 	modeId: z.string().optional(),
 	modeName: z.string().optional(),
-});
+})
 
 export const tokenizedValueSchema = z.object({
 	tokenRef: tokenRefSchema,
 	fallback: z.unknown(),
-});
+})

@@ -1,6 +1,6 @@
-import { isNumber } from 'es-toolkit/compat';
-import { toTokenizedValue } from './utils';
-import type { ExtractedLayoutProps } from '../extract/layout';
+import { isNumber } from "es-toolkit/compat"
+
+import type { ExtractedLayoutProps } from "../extract/layout"
 import type {
 	NormalizedLayout,
 	NormalizedLayoutChild,
@@ -8,46 +8,43 @@ import type {
 	NormalizedLayoutGap,
 	NormalizedLayoutPadding,
 	NormalizedLayoutPosition,
-} from './types';
+} from "./types"
+import { toTokenizedValue } from "./utils"
 
 export class LayoutNormalizer {
-	normalizeLayout(layout: ExtractedLayoutProps, boundVariables?: SceneNode['boundVariables']): NormalizedLayout {
-		const layoutMode = layout.layoutMode?.value;
+	normalizeLayout(layout: ExtractedLayoutProps, boundVariables?: SceneNode["boundVariables"]): NormalizedLayout {
+		const layoutMode = layout.layoutMode?.value
 		const mode =
-			layoutMode === 'GRID'
-				? 'GRID'
-				: layoutMode === 'HORIZONTAL' || layoutMode === 'VERTICAL'
-					? 'AUTO'
-					: 'ABSOLUTE';
+			layoutMode === "GRID" ? "GRID" : layoutMode === "HORIZONTAL" || layoutMode === "VERTICAL" ? "AUTO" : "ABSOLUTE"
 
 		const normalized: NormalizedLayout = {
 			mode,
 			position: this.buildPosition(layout, boundVariables),
-		};
-
-		if (layout.constraints) {
-			normalized.constraints = layout.constraints.value;
 		}
 
-		const container = this.buildContainer(layout, boundVariables);
-		if (container) normalized.container = container;
+		if (layout.constraints) {
+			normalized.constraints = layout.constraints.value
+		}
 
-		const child = this.buildChild(layout);
-		if (child) normalized.child = child;
+		const container = this.buildContainer(layout, boundVariables)
+		if (container) normalized.container = container
 
-		return normalized;
+		const child = this.buildChild(layout)
+		if (child) normalized.child = child
+
+		return normalized
 	}
 
 	private buildPosition(
 		layout: ExtractedLayoutProps,
-		boundVariables?: SceneNode['boundVariables'],
+		boundVariables?: SceneNode["boundVariables"],
 	): NormalizedLayoutPosition {
-		const width = this.toNumber(layout.width?.value);
-		const height = this.toNumber(layout.height?.value);
-		const minWidth = layout.minWidth?.value ?? null;
-		const maxWidth = layout.maxWidth?.value ?? null;
-		const minHeight = layout.minHeight?.value ?? null;
-		const maxHeight = layout.maxHeight?.value ?? null;
+		const width = this.toNumber(layout.width?.value)
+		const height = this.toNumber(layout.height?.value)
+		const minWidth = layout.minWidth?.value ?? null
+		const maxWidth = layout.maxWidth?.value ?? null
+		const minHeight = layout.minHeight?.value ?? null
+		const maxHeight = layout.maxHeight?.value ?? null
 
 		return {
 			x: this.toNumber(layout.x?.value),
@@ -58,103 +55,102 @@ export class LayoutNormalizer {
 			maxWidth: maxWidth === null ? null : toTokenizedValue(maxWidth, boundVariables?.maxWidth),
 			minHeight: minHeight === null ? null : toTokenizedValue(minHeight, boundVariables?.minHeight),
 			maxHeight: maxHeight === null ? null : toTokenizedValue(maxHeight, boundVariables?.maxHeight),
-		};
+		}
 	}
 
 	private buildPadding(
 		layout: ExtractedLayoutProps,
-		boundVariables?: SceneNode['boundVariables'],
+		boundVariables?: SceneNode["boundVariables"],
 	): NormalizedLayoutPadding | undefined {
 		const hasPadding =
 			isNumber(layout.paddingTop?.value) ||
 			isNumber(layout.paddingRight?.value) ||
 			isNumber(layout.paddingBottom?.value) ||
-			isNumber(layout.paddingLeft?.value);
+			isNumber(layout.paddingLeft?.value)
 
-		if (!hasPadding) return undefined;
+		if (!hasPadding) return undefined
 
 		return {
 			top: toTokenizedValue(this.toNumber(layout.paddingTop?.value), boundVariables?.paddingTop),
 			right: toTokenizedValue(this.toNumber(layout.paddingRight?.value), boundVariables?.paddingRight),
 			bottom: toTokenizedValue(this.toNumber(layout.paddingBottom?.value), boundVariables?.paddingBottom),
 			left: toTokenizedValue(this.toNumber(layout.paddingLeft?.value), boundVariables?.paddingLeft),
-		};
+		}
 	}
 
 	private buildGap(
 		layout: ExtractedLayoutProps,
-		boundVariables?: SceneNode['boundVariables'],
+		boundVariables?: SceneNode["boundVariables"],
 	): NormalizedLayoutGap | undefined {
-		const gap: NormalizedLayoutGap = {};
-		const gridRowGapAlias = boundVariables?.gridRowGap;
-		const gridColumnGapAlias = boundVariables?.gridColumnGap;
-		const itemSpacingAlias = boundVariables?.itemSpacing;
-		const counterAxisSpacingAlias = boundVariables?.counterAxisSpacing;
-		const layoutMode = layout.layoutMode?.value;
-		const layoutWrap = layout.layoutWrap?.value;
+		const gap: NormalizedLayoutGap = {}
+		const gridRowGapAlias = boundVariables?.gridRowGap
+		const gridColumnGapAlias = boundVariables?.gridColumnGap
+		const itemSpacingAlias = boundVariables?.itemSpacing
+		const counterAxisSpacingAlias = boundVariables?.counterAxisSpacing
+		const layoutMode = layout.layoutMode?.value
+		const layoutWrap = layout.layoutWrap?.value
 
-		if (layoutMode === 'GRID') {
+		if (layoutMode === "GRID") {
 			if (isNumber(layout.gridRowGap?.value)) {
-				gap.row = toTokenizedValue(layout.gridRowGap.value, gridRowGapAlias);
+				gap.row = toTokenizedValue(layout.gridRowGap.value, gridRowGapAlias)
 			}
 			if (isNumber(layout.gridColumnGap?.value)) {
-				gap.column = toTokenizedValue(layout.gridColumnGap.value, gridColumnGapAlias);
+				gap.column = toTokenizedValue(layout.gridColumnGap.value, gridColumnGapAlias)
 			}
 		}
 
-		if (layoutMode === 'HORIZONTAL') {
+		if (layoutMode === "HORIZONTAL") {
 			if (isNumber(layout.itemSpacing?.value)) {
-				gap.column = toTokenizedValue(layout.itemSpacing.value, itemSpacingAlias);
+				gap.column = toTokenizedValue(layout.itemSpacing.value, itemSpacingAlias)
 			}
-			if (layoutWrap === 'WRAP' && isNumber(layout.counterAxisSpacing?.value)) {
-				gap.row = toTokenizedValue(layout.counterAxisSpacing.value, counterAxisSpacingAlias);
+			if (layoutWrap === "WRAP" && isNumber(layout.counterAxisSpacing?.value)) {
+				gap.row = toTokenizedValue(layout.counterAxisSpacing.value, counterAxisSpacingAlias)
 			}
 		}
 
-		if (layoutMode === 'VERTICAL') {
+		if (layoutMode === "VERTICAL") {
 			if (isNumber(layout.itemSpacing?.value)) {
-				gap.row = toTokenizedValue(layout.itemSpacing.value, itemSpacingAlias);
+				gap.row = toTokenizedValue(layout.itemSpacing.value, itemSpacingAlias)
 			}
-			if (layoutWrap === 'WRAP' && isNumber(layout.counterAxisSpacing?.value)) {
-				gap.column = toTokenizedValue(layout.counterAxisSpacing.value, counterAxisSpacingAlias);
+			if (layoutWrap === "WRAP" && isNumber(layout.counterAxisSpacing?.value)) {
+				gap.column = toTokenizedValue(layout.counterAxisSpacing.value, counterAxisSpacingAlias)
 			}
 		}
 
-		const hasRow = gap.row !== undefined && gap.row !== null;
-		const hasColumn = gap.column !== undefined && gap.column !== null;
-		if (!hasRow && !hasColumn) return undefined;
-		return gap;
+		const hasRow = gap.row !== undefined && gap.row !== null
+		const hasColumn = gap.column !== undefined && gap.column !== null
+		if (!hasRow && !hasColumn) return undefined
+		return gap
 	}
 
 	private buildContainer(
 		layout: ExtractedLayoutProps,
-		boundVariables?: SceneNode['boundVariables'],
+		boundVariables?: SceneNode["boundVariables"],
 	): NormalizedLayoutContainer | undefined {
-		const container: NormalizedLayoutContainer = {};
-		const layoutMode = layout.layoutMode?.value;
+		const container: NormalizedLayoutContainer = {}
+		const layoutMode = layout.layoutMode?.value
 
-		if (layoutMode === 'HORIZONTAL' || layoutMode === 'VERTICAL') {
-			container.direction = layoutMode;
+		if (layoutMode === "HORIZONTAL" || layoutMode === "VERTICAL") {
+			container.direction = layoutMode
 		}
 
-		const padding = this.buildPadding(layout, boundVariables);
-		if (padding) container.padding = padding;
+		const padding = this.buildPadding(layout, boundVariables)
+		if (padding) container.padding = padding
 
-		const gap = this.buildGap(layout, boundVariables);
-		if (gap) container.gap = gap;
+		const gap = this.buildGap(layout, boundVariables)
+		if (gap) container.gap = gap
 
-		if (layout.primaryAxisAlignItems?.value) container.primaryAxisAlignItems = layout.primaryAxisAlignItems.value;
-		if (layout.counterAxisAlignItems?.value) container.counterAxisAlignItems = layout.counterAxisAlignItems.value;
-		if (layout.counterAxisAlignContent?.value)
-			container.counterAxisAlignContent = layout.counterAxisAlignContent.value;
-		if (layout.primaryAxisSizingMode?.value) container.primaryAxisSizingMode = layout.primaryAxisSizingMode.value;
-		if (layout.counterAxisSizingMode?.value) container.counterAxisSizingMode = layout.counterAxisSizingMode.value;
-		if (layout.layoutWrap?.value) container.layoutWrap = layout.layoutWrap.value;
-		if (typeof layout.strokesIncludedInLayout?.value === 'boolean') {
-			container.strokesIncludedInLayout = layout.strokesIncludedInLayout.value;
+		if (layout.primaryAxisAlignItems?.value) container.primaryAxisAlignItems = layout.primaryAxisAlignItems.value
+		if (layout.counterAxisAlignItems?.value) container.counterAxisAlignItems = layout.counterAxisAlignItems.value
+		if (layout.counterAxisAlignContent?.value) container.counterAxisAlignContent = layout.counterAxisAlignContent.value
+		if (layout.primaryAxisSizingMode?.value) container.primaryAxisSizingMode = layout.primaryAxisSizingMode.value
+		if (layout.counterAxisSizingMode?.value) container.counterAxisSizingMode = layout.counterAxisSizingMode.value
+		if (layout.layoutWrap?.value) container.layoutWrap = layout.layoutWrap.value
+		if (typeof layout.strokesIncludedInLayout?.value === "boolean") {
+			container.strokesIncludedInLayout = layout.strokesIncludedInLayout.value
 		}
-		if (typeof layout.itemReverseZIndex?.value === 'boolean') {
-			container.itemReverseZIndex = layout.itemReverseZIndex.value;
+		if (typeof layout.itemReverseZIndex?.value === "boolean") {
+			container.itemReverseZIndex = layout.itemReverseZIndex.value
 		}
 
 		if (
@@ -170,20 +166,20 @@ export class LayoutNormalizer {
 				columnGap: toTokenizedValue(this.toNumber(layout.gridColumnGap?.value), boundVariables?.gridColumnGap),
 				rowSizes: layout.gridRowSizes?.value ?? [],
 				columnSizes: layout.gridColumnSizes?.value ?? [],
-			};
+			}
 		}
 
-		return Object.keys(container).length > 0 ? container : undefined;
+		return Object.keys(container).length > 0 ? container : undefined
 	}
 
 	private buildChild(layout: ExtractedLayoutProps): NormalizedLayoutChild | undefined {
-		const child: NormalizedLayoutChild = {};
+		const child: NormalizedLayoutChild = {}
 
-		if (layout.layoutAlign?.value) child.layoutAlign = layout.layoutAlign.value;
-		if (isNumber(layout.layoutGrow?.value)) child.layoutGrow = layout.layoutGrow.value;
-		if (layout.layoutPositioning?.value) child.layoutPositioning = layout.layoutPositioning.value;
-		if (layout.layoutSizingHorizontal?.value) child.layoutSizingHorizontal = layout.layoutSizingHorizontal.value;
-		if (layout.layoutSizingVertical?.value) child.layoutSizingVertical = layout.layoutSizingVertical.value;
+		if (layout.layoutAlign?.value) child.layoutAlign = layout.layoutAlign.value
+		if (isNumber(layout.layoutGrow?.value)) child.layoutGrow = layout.layoutGrow.value
+		if (layout.layoutPositioning?.value) child.layoutPositioning = layout.layoutPositioning.value
+		if (layout.layoutSizingHorizontal?.value) child.layoutSizingHorizontal = layout.layoutSizingHorizontal.value
+		if (layout.layoutSizingVertical?.value) child.layoutSizingVertical = layout.layoutSizingVertical.value
 
 		if (
 			isNumber(layout.gridRowAnchorIndex?.value) ||
@@ -198,17 +194,17 @@ export class LayoutNormalizer {
 				column: this.toNumber(layout.gridColumnAnchorIndex?.value),
 				rowSpan: isNumber(layout.gridRowSpan?.value) ? layout.gridRowSpan.value : 1,
 				columnSpan: isNumber(layout.gridColumnSpan?.value) ? layout.gridColumnSpan.value : 1,
-				horizontalAlign: layout.gridChildHorizontalAlign?.value ?? 'AUTO',
-				verticalAlign: layout.gridChildVerticalAlign?.value ?? 'AUTO',
-			};
+				horizontalAlign: layout.gridChildHorizontalAlign?.value ?? "AUTO",
+				verticalAlign: layout.gridChildVerticalAlign?.value ?? "AUTO",
+			}
 		}
 
-		return Object.keys(child).length > 0 ? child : undefined;
+		return Object.keys(child).length > 0 ? child : undefined
 	}
 
 	private toNumber(value: number | undefined): number {
-		return typeof value === 'number' ? value : 0;
+		return typeof value === "number" ? value : 0
 	}
 }
 
-export const layoutNormalizer = new LayoutNormalizer();
+export const layoutNormalizer = new LayoutNormalizer()

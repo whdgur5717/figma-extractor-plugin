@@ -1,2 +1,2 @@
-export { CssCompatibilityChecker, cssCompatibilityChecker } from './checker';
-export type { CssCompatibilityResult } from './checker';
+export type { CssCompatibilityResult } from "./checker"
+export { CssCompatibilityChecker, cssCompatibilityChecker } from "./checker"
