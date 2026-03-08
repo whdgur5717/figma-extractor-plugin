@@ -1,5 +1,5 @@
 {
-	"extends": "@design-editor/tsconfig/base.json",
+	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"types": ["@figma/plugin-typings"]
 	},

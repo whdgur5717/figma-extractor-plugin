@@ -1,4 +1,4 @@
 {
-	"extends": "@design-editor/tsconfig/base.json",
+	"extends": "../../tsconfig.base.json",
 	"include": ["**/*.ts", "**/*.tsx", "../vite-env.d.ts"]
 }
